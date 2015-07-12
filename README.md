@@ -1,17 +1,39 @@
-# points-tracker
-An simple web app for tracking arbitrary points
+# Flask App Bootstrap
+An simple Flask app Template with:
+* User Authentication
+* Module Angular App Layout
+* Partial minification
+* Asset Management
+* Style framework
 
-# Dev Environment
-# requires bower command
-npm install -g bower-cli
-# virtualenv reccomended
-# requires postgres and user (see settings)
-brew install postgres
-# actual setup
-export APP_ENV="dev"
+# Dev Environment Dependencies
+* bower-cli
+* postgres
+
+# First Time Setup
+
 pip install -r requirements.txt
-bower install
+
+```
+npm install
 python manage.py create_db
 python manage.py db upgrade
 python manage.py create_user
-python manage.py server
+```
+
+#Starting the development Server
+### Set the enviormetal variables
+
+```
+export APP_ENV="dev"
+```
+### Start the server
+```
+python manage.py runserver
+```
+
+# Database migrations
+```
+python manage.py db migrate
+python manage.py db upgrade
+```
