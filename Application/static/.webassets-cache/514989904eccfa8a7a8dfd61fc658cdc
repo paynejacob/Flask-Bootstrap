@@ -1,0 +1,3 @@
+Vangular.module('flask-assets-templates', []).run(['$templateCache', function($templateCache) {\u000a  $templateCache.put('/static/partials/dashboard.html', "<div ng-controller=\u005c"DashboardCtrl as ctrl\u005c">\u005cn  <h1>{{ctrl.title}}</h1>\u005cn</div>\u005cn");\u000a}]);\u000a
+p1
+.

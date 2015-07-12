@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block body_class %}login-page{% endblock %}
+
+{% block container_start %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3 well col-xs-12 auth_box">
+{% endblock %}
+
+{% block content %}
+    {% if current_user and current_user.is_authenticated() %}
+      <p>Logged in as {{ current_user.username }} (<a href="{{ url_for('auth.logout') }}">Log out</a>)</p>
+    {% endif %}
+
+    <form id="loginForm" method="POST" class="form" action="{{ url_for('auth.login') }}" role="login">
+      {{ form.hidden_tag() }}
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+        {{ form.username(placeholder="Username", class_="form-control normalcase") }}
+      </div>
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+        {{ form.password(placeholder="Password", class_="form-control normalcase") }}
+      </div>
+      <div class="form-group text-center" style="float:right; margin-bottom:0px; width: 100%">
+        <button type="submit" class='form-control btn btn-primary'>Login</button>
+      </div>
+    </form>
+{% endblock %}
+
+{% block container_end %}
+    </div>
+  </div>
+</div>
+{% endblock %}

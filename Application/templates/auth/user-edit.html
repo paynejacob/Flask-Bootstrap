@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1>Edit User</h1>
+<div class="col-md-6 col-md-push-3 well well-lg top-buffer-lg" style="padding-left: 10px; padding-right: 10px;">
+  <form id="editUserForm" class="form form-edit-user" method="POST" action="" role="form">
+    {{ form.hidden_tag() }}
+    <div class="col-xs-12">
+      <div class="form-group">
+        <label>Username</label>
+        <input class="form-control normalcase readonly" value="{{user.username}}" readonly>
+      </div>
+    </div>
+    <div class="col-xs-12">
+      <div class="form-group">
+        {{form.full_name.label}}
+        {{form.full_name(placeholder="Full name", class_="form-control normalcase")}}
+      </div>
+    </div>
+    <div class="col-xs-12">
+      {{form.is_admin.label}}
+      <div class="form-group">
+        <div class="btn-group" data-toggle="buttons">
+          {% for subfield in form.is_admin %}
+            <label class="btn {% if user.is_admin and subfield.label.text == 'Admin' %}btn-primary active{% elif not user.is_admin and not subfield.label.text == 'Admin' %}btn-primary active{% else %}btn-default{% endif %}">
+              {{ subfield }} {{ subfield.label.text }}
+            </label>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12">
+      {{form.active.label}}
+      <div class="form-group">
+        <div class="btn-group" data-toggle="buttons">
+          {% for subfield in form.active %}
+            <label class="btn {% if user.active and subfield.label.text == 'Enabled' %}active btn-primary{% elif not user.active and not subfield.label.text == 'Enabled' %}active btn-primary{% else %}btn-default{% endif %}">
+              {{ subfield }} {{ subfield.label.text }}
+            </label>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12">
+      <a href="javascript://" data-toggle="collapse" data-target="#change-password-form">Change Password &raquo;</a>
+      <div id="change-password-form" class="collapse" style="margin:15px 0 30px 15px">
+        <div class="form-group">
+          {{form.password.label}}
+          {{form.password(class_="form-control normalcase")}}
+          <span class="help-block">Please include a mix of uppercase, lowercase, numbers, and symbols.</span>
+        </div>
+        <div class="form-group">
+          {{form.confirm.label}}
+          {{form.confirm(class_="form-control normalcase")}}
+        </div>
+      </div>
+    </div>
+    <div class="text-right col-xs-12">
+      <a href="{{url_for('auth.user_list')}}" class="btn btn-default">Cancel</a>
+      <button class="btn btn-primary btn-submit">Save Changes</button>
+    </div>
+  </form>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script>
+  $("[data-toggle='buttons']").on("click", function(){
+    $(this).find("label")
+      .toggleClass("btn-primary")
+      .toggleClass("btn-default");
+  });
+</script>
+{% endblock %}

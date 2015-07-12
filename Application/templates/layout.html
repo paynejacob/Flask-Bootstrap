@@ -1,0 +1,79 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+
+  <title>{% block page_title %}points_tracker{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}{% endblock %}">
+  <meta name="author" content="{% block meta_author %}{% endblock %}">
+
+  <!-- Mobile viewport optimized: h5bp.com/viewport -->
+  <meta name="viewport" content="width=device-width">
+  <link rel="icon" type="image/gif" href="{{ url_for('static', filename='images/favicon.ico') }}">
+  <link href='//fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="{{ url_for('static', filename='libs/font-awesome/css/font-awesome.min.css') }}">
+
+  {% assets "app_css" %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}">
+  {% endassets %}
+  {% assets "vendor_css" %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}">
+  {% endassets %}
+  {% block css %}{% endblock %}
+
+</head>
+<body ng-app="points_tracker" class="{% block body_class %}{% endblock %}">
+{% block body %}
+{% with form=form, layout=self %}
+{% include "nav.html" %}
+{% endwith %}
+
+<header>{% block header %}{% endblock %}</header>
+
+{% block container_start %}
+<div class="container">
+{% endblock %}
+
+  <div role="main">
+    <toaster-container toaster-options="{'time-out': 3000, 'close-button':true}"></toaster-container>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div ng-controller="FlaskToasterCtrl as ctrl" >
+          {% for category, message in messages %}
+            <div style="display:none;" class="flask-message flask-message-{{loop.index0}}">{{message}}</div>
+            <div style="display:none;" class="flask-category">{{category}}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+</div>
+
+{% block container_end %}
+</div>
+{% endblock %}
+
+<!-- JavaScript at the bottom for fast page loading -->
+{% assets "vendor_js" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
+{% assets "angular_templates_js" %}
+  {% if config['ASSETS_DEBUG'] %}
+  <script type="text/javascript">
+    angular.module('flask-assets-templates', []);
+  </script>
+  {% else %}
+  <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+  {% endif %}
+{% endassets %}
+{% assets "app_js" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
+{% block js %}{% endblock %}
+<!-- end scripts -->
+{% endblock %}
+</body>
+</html>

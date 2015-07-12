@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1>Create User</h1>
+<div class="col-md-6 col-md-push-3 well well-lg top-buffer-lg">
+  <form id="createUserForm" class="form form-create-user" method="POST" action="" role="form">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+      {{form.username.label}}
+      {{form.username(placeholder="Username", class_="form-control normalcase")}}
+    </div>
+    <div class="form-group">
+      {{form.full_name.label}}
+      {{form.full_name(placeholder="Full name", class_="form-control normalcase")}}
+    </div>
+    <div class="form-group">
+      {{form.password.label}}
+      {{form.password(placeholder="Password", class_="form-control normalcase")}}
+      <span class="help-block">Please include a mix of uppercase, lowercase, numbers, and symbols.</span>
+    </div>
+    <div class="form-group">
+      {{form.confirm.label}}
+      {{form.confirm(placeholder="Password (again)", class_="form-control normalcase")}}
+    </div>
+    <div class="text-right">
+      <a href="{{url_for('auth.user_list')}}" class="btn btn-default">Cancel</a>
+      <button class="btn btn-primary btn-submit">Create User</button>
+    </div>
+  </form>
+</div>
+{% endblock %}
+

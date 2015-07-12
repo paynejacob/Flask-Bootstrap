@@ -1,0 +1,44 @@
+# Testing
+pytest>=2.6.3
+webtest
+flask-testing
+factory-boy==2.5.1
+mock
+
+# Management script
+Flask-Script
+
+# Flask
+Flask==0.10.1
+MarkupSafe==0.23
+Jinja2==2.7.3
+itsdangerous==0.24
+
+# Database
+Flask-SQLAlchemy==2.0
+SQLAlchemy==0.9.8
+Flask-Migrate==1.3.1
+psycopg2==2.6
+
+# Forms
+Flask-WTF==0.11
+WTForms==2.0.2
+
+# Assets
+Flask-Assets==0.10
+cssmin>=0.2.0
+jsmin>=2.0.11
+pyScss>=1.3.0
+
+# Auth
+Flask-Login==0.2.11
+Flask-Bcrypt==0.6.2
+
+# Admin interface
+Flask-SuperAdmin==1.7.1
+
+# Other goodies
+python-dateutil==2.4.2
+
+# Logging
+blinker==1.3

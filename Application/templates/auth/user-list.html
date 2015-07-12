@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1>Manage Users</h1>
+<div class="col-md-8 col-md-push-2 well well-lg top-buffer">
+  <table class="table table-striped user-table">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Full name</th>
+        <th>Role</th>
+        <th>Enabled</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+      <tr>
+        <th><a href="{{ url_for('auth.edit_user', user_id=user.id) }}">{{ user.username }}</a></th>
+        <td>{{ user.full_name }}</td>
+        <td>
+          {% if user.has_role("orgadmin") %}
+          <span class="label label-warning">Admin</span>
+          {% else %}
+          <span class="label label-default">Basic</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if user.active %}
+          <span class="label label-success">Enabled</span>
+          {% else %}
+          <span class="label label-danger">Disabled</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="text-right">
+    <a class="btn btn-default" href="{{ url_for('auth.create_user') }}">Create User</a>
+  </div>
+</div>
+{% endblock %}
