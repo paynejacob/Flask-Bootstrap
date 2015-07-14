@@ -32,7 +32,7 @@
     $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
       // Scroll to top of page on any state change.
       // This is coupled with the `autoscroll="false"` on the ui-view tag
-      // in points_tracker/templates/dashboard.html
+      // in Application/templates/dashboard.html
       $('html, body').animate({scrollTop: 0}, 200);
 
     });
