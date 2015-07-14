@@ -10,7 +10,7 @@
   function DashboardCtrl($scope, toaster, $log) {
     var self = this;
 
-    self.title = "Welcome!"
+    self.title = "dashboard"
 
   }
 

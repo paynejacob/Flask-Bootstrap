@@ -6,7 +6,7 @@
     .config(AppConfig)
     .run(AppRun);
 
-  PointsConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$resourceProvider'];
+  AppConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$resourceProvider'];
 
   function AppConfig($stateProvider, $urlRouterProvider, $resourceProvider) {
     $urlRouterProvider.otherwise("/");
