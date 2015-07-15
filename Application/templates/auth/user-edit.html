@@ -3,7 +3,7 @@
 {% block content %}
 <h1>Edit User</h1>
 <div class="col-md-6 col-md-push-3 well well-lg top-buffer-lg" style="padding-left: 10px; padding-right: 10px;">
-  <form id="editUserForm" class="form form-edit-user" method="POST" action="" role="form">
+  <form id="editUserForm" class="form form-edit-user" method="POST" action="/auth/users/{{ user.id }}" role="form">
     {{ form.hidden_tag() }}
     <div class="col-xs-12">
       <div class="form-group">

@@ -3,7 +3,7 @@
 {% block content %}
 <h1>Create User</h1>
 <div class="col-md-6 col-md-push-3 well well-lg top-buffer-lg">
-  <form id="createUserForm" class="form form-create-user" method="POST" action="" role="form">
+  <form id="createUserForm" class="form form-create-user" method="POST" action="/auth/users/add" role="form">
     {{ form.hidden_tag() }}
     <div class="form-group">
       {{form.username.label}}
@@ -29,4 +29,3 @@
   </form>
 </div>
 {% endblock %}
-
