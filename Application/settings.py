@@ -36,7 +36,7 @@ class Config(object):
     APP_DIR = os.path.abspath(os.path.dirname(__file__))
     PROJECT_ROOT = os.path.abspath(os.path.join(APP_DIR, os.pardir))
 
-    SECRET_KEY = 'TYdVdFdsuyEBYL9UGN4VGLTm'
+    SECRET_KEY = "dontprodme".encode("utf-8")
     BCRYPT_LOG_ROUNDS = 13
     ASSETS_DEBUG = False
     ADMIN_ENABLED = True
@@ -56,7 +56,7 @@ class DevConfig(Config):
     # Uncomment this line to debug javascript/css assets
     # ASSETS_DEBUG = True
     DATABASE_NAME = 'my_apps_db'
-    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:password@localhost/'+DATABASE_NAME
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///'+DATABASE_NAME
 
     # Ease up on password requirements in dev to allow simple testing
     PASSWORD_REQUIRE_MIN = 4

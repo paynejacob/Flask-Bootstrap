@@ -3,16 +3,15 @@
 in app.py
 """
 
-from flask_bcrypt import Bcrypt
-bcrypt = Bcrypt()
+import flask.ext.scrypt as crypto
 
-from flask_login import LoginManager
+from flask.ext.login import LoginManager
 login_manager = LoginManager()
 
-from flask_sqlalchemy import SQLAlchemy
+from flask.ext.sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
-from flask_migrate import Migrate
+from flask.ext.migrate import Migrate
 migrate = Migrate()
 
 from Application.admin import Admin

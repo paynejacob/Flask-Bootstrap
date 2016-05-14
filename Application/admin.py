@@ -1,19 +1,17 @@
 # -*- coding: utf-8 -*-
-"""Admin module. Tees up the Flask-SuperAdmin blueprint.
+"""Admin module. Tees up the Flask-Admin blueprint.
 """
 from flask import render_template
 from flask.ext.login import current_user
-from flask.ext.superadmin import AdminIndexView, Admin as SuperAdmin
-from flask.ext.superadmin.model import ModelAdmin
+from flask.ext.admin import AdminIndexView, Admin as WrappedAdmin
+from flask.ext.admin.contrib.sqla import ModelView
 
-from Application.auth import role_required
+from Application.auth import role_required, AdminModels
 from Application.extensions import db
 
 
 
-class ProtectedModelView(ModelAdmin):
-
-    session = db.session
+class ProtectedModelView(ModelView):
 
     def is_accessible(self):
         return role_required('admin').has_role()
@@ -30,6 +28,6 @@ class Admin(object):
     def init_app(self, app):
         from Application.auth import models as auth_models
         index_view = ProtectedAdminIndexView(name='Admin Console')
-        admin = SuperAdmin(app, 'Application', index_view=index_view)
-        admin.register(auth_models.User, ProtectedModelView)
-        admin.register(auth_models.Role, ProtectedModelView)
+        admin = WrappedAdmin(app, 'Application', index_view=index_view, template_mode="bootstrap3")
+        for model in AdminModels:
+            admin.add_view(ProtectedModelView(model, db.session))

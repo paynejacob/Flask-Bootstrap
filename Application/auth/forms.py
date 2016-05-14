@@ -51,7 +51,6 @@ class LoginForm(Form):
         initial_validation = super(LoginForm, self).validate()
         if not initial_validation:
             return False
-
         self.user = User.query.filter_by(username=self.username.data).first()
         if not self.user or not self.user.check_password(self.password.data):
             self.password.errors.append('Invalid username or password')

@@ -4,7 +4,7 @@ from flask import Flask, render_template, got_request_exception
 
 from Application.assets import assets
 from Application.extensions import (
-    bcrypt, db, login_manager, migrate, admin
+    db, login_manager, migrate, admin
 )
 from Application import views, models
 from Application.auth import views as auth_views
@@ -30,7 +30,6 @@ def create_app(config_object=ProdConfig):
 
 def register_extensions(app):
     assets.init_app(app)
-    bcrypt.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
     migrate.init_app(app, db)

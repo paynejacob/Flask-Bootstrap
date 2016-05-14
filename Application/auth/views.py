@@ -21,7 +21,7 @@ login_manager.login_view = 'users.login'
 
 @login_manager.unauthorized_handler
 def unauthorized():
-    if current_user and current_user.is_authenticated():
+    if current_user and current_user.is_authenticated:
         return render_template('401.html')
     else:
         return redirect(url_for('auth.login'))
@@ -41,6 +41,8 @@ def login():
             return redirect(redirect_url)
         else:
             flash_errors(form)
+            # return ''
+            #abort(403)
     return render_template("auth/login.html", form=form)
 
 @blueprint.route('/logout/')

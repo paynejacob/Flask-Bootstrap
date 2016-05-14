@@ -3,6 +3,7 @@
 from flask import render_template, make_response
 from flask.ext.login import current_user
 from functools import wraps
+from .models import AdminModels
 
 
 class role_required(object):

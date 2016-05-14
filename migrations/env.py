@@ -18,6 +18,9 @@ fileConfig(config.config_file_name)
 from flask import current_app
 config.set_main_option('sqlalchemy.url', current_app.config.get('SQLALCHEMY_DATABASE_URI'))
 target_metadata = current_app.extensions['migrate'].db.metadata
+# print(current_app.extensions)
+# from ..Application.database import db
+engine = current_app.extensions['migrate'].db.get_engine(current_app)
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
@@ -37,10 +40,10 @@ def run_migrations_offline():
 
     """
     url = config.get_main_option("sqlalchemy.url")
-    context.configure(url=url)
-
-    with context.begin_transaction():
-        context.run_migrations()
+    with engine.connect() as connection:
+        context.configure(connection=connection)
+        with context.begin_transaction():
+            context.run_migrations()
 
 def run_migrations_online():
     """Run migrations in 'online' mode.
@@ -49,10 +52,10 @@ def run_migrations_online():
     and associate a connection with the context.
 
     """
-    engine = engine_from_config(
-                config.get_section(config.config_ini_section),
-                prefix='sqlalchemy.',
-                poolclass=pool.NullPool)
+    # engine = engine_from_config(
+    #             config.get_section(config.config_ini_section),
+    #             prefix='sqlalchemy.',
+    #             poolclass=pool.NullPool)
 
     connection = engine.connect()
     context.configure(

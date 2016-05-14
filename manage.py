@@ -1,8 +1,9 @@
 #!/usr/bin/env python
+from __future__ import print_function
 import os
 import sqlalchemy
-from flask_script import Manager, Shell, Server
-from flask_migrate import MigrateCommand
+from flask.ext.script import Manager, Shell, Server
+from flask.ext.migrate import MigrateCommand, Migrate
 
 from Application.settings import get_config_for_current_environment
 
@@ -13,6 +14,8 @@ from Application.database import db
 
 app = create_app(get_config_for_current_environment())
 manager = Manager(app)
+migrate = Migrate(app, db)
+
 
 def _make_context():
     """Return context dict for a shell session so you can access
@@ -31,19 +34,19 @@ def test():
 
 @manager.command
 def create_db():
-    connection_string = '%s/postgres' % app.config['SQLALCHEMY_DATABASE_URI'].rsplit('/', 1)[0]
-    with sqlalchemy.create_engine(connection_string, isolation_level='AUTOCOMMIT').connect() as connection:
+    connection_string = app.config['SQLALCHEMY_DATABASE_URI']
+    with sqlalchemy.create_engine(connection_string).connect() as connection:
         try:
-            connection.execute('CREATE DATABASE {}'.format(app.config['DATABASE_NAME']))
-            print 'Created database {}'.format(app.config['DATABASE_NAME'])
-        except Exception, ex:
+            # connection.execute('CREATE DATABASE {}'.format(app.config['DATABASE_NAME']))
+            print('Created database {}'.format(app.config['DATABASE_NAME']))
+        except Exception as ex:
             # fails if db already exists
-            print ex.message
+            print(ex.message)
 
 @manager.command
 def create_user():
     import getpass
-    user = raw_input("Username [{}]: ".format(getpass.getuser()))
+    user = input("Username [{}]: ".format(getpass.getuser()))
     if not user:
         user = getpass.getuser()
     pprompt = lambda: (getpass.getpass(), getpass.getpass('Retype password: '))
@@ -53,7 +56,7 @@ def create_user():
         p1, p2 = pprompt()
 
     User.create(username=user, password=p1, active=True, is_admin=True)
-    print 'Administrator account created for {}'.format(user)
+    print('Administrator account created for {}'.format(user))
 
 
 manager.add_command('server', Server(threaded=True))

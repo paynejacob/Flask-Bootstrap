@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 import datetime as dt
 
-from flask_login import UserMixin
-from Application.extensions import bcrypt
+from flask import current_app
+from flask.ext.login import UserMixin
+from Application.extensions import crypto
 from Application.database import Model, SurrogatePK, Column, db, ReferenceCol, relationship
 
 
@@ -28,6 +29,7 @@ class User(UserMixin, SurrogatePK, Model):
 
     username = Column(db.String(80), unique=True, nullable=False)
     password = Column(db.String(128), nullable=True)
+    salt = Column(db.String(128), nullable=True)
     full_name = Column(db.String(80), nullable=True)
     active = Column(db.Boolean(), default=False)
     is_admin = Column(db.Boolean(), default=False)
@@ -41,10 +43,11 @@ class User(UserMixin, SurrogatePK, Model):
             self.password = None
 
     def set_password(self, password):
-        self.password = bcrypt.generate_password_hash(password)
+        self.salt = crypto.generate_random_salt()
+        self.password = crypto.generate_password_hash(password, self.salt)
 
     def check_password(self, value):
-        return bcrypt.check_password_hash(self.password, value)
+        return crypto.check_password_hash(value, self.password, self.salt)
 
     def has_role(self, role, ignore_super=False):
         if not ignore_super and self.is_admin:
@@ -62,3 +65,5 @@ class User(UserMixin, SurrogatePK, Model):
 
     def __repr__(self):
         return '{username}'.format(username=self.username)
+
+AdminModels = [Role, User]

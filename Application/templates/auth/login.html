@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-    {% if current_user and current_user.is_authenticated() %}
+    {% if current_user and current_user.is_authenticated %}
       <p>Logged in as {{ current_user.username }} (<a href="{{ url_for('auth.logout') }}">Log out</a>)</p>
     {% endif %}
 
