@@ -1,50 +1,63 @@
 # -*- coding: utf-8 -*-
 """The app module, containing the app factory function."""
-from flask import Flask, render_template, got_request_exception
+from flask import Flask, render_template
 
-from Application.assets import assets
-from Application.extensions import (
-    db, login_manager, migrate, admin
-)
-from Application import views, models
-from Application.auth import views as auth_views
+from .assets import assets
+from .admin import Admin
+from .database import db
+from .auth import login_manager
+from . import views
+from .auth import views as auth_views
 
-from Application.settings import ProdConfig
+from .settings import ProdConfig
 
 def create_app(config_object=ProdConfig):
-    """An application factory, as explained here:
-        http://flask.pocoo.org/docs/patterns/appfactories/
+  """An application factory, as explained here:
+    http://flask.pocoo.org/docs/patterns/appfactories/
 
-    :param config_object: The configuration object to use.
-    """
-    app = Flask(__name__)
-    app.config.from_object(config_object)
-    register_extensions(app)
-    register_blueprints(app)
-    register_errorhandlers(app)
+  :param config_object: The configuration object to use.
+  """
+  app = Flask(__name__)
+  app.config.from_object(config_object)
+  register_extensions(app)
+  register_blueprints(app)
+  register_errorhandlers(app)
 
-    if (app.config['ADMIN_ENABLED']):
-        register_admin_interface(app)
+  if app.config['ADMIN_ENABLED']:
+    register_admin_interface(app)
 
-    return app
+  return app
 
 def register_extensions(app):
-    assets.init_app(app)
-    db.init_app(app)
-    login_manager.init_app(app)
-    migrate.init_app(app, db)
+  """
+  Call .init_app() on known extensions
+  """
+  assets.init_app(app)
+  db.init_app(app)
+  login_manager.init_app(app)
 
 def register_admin_interface(app):
-    admin.init_app(app)
+  """
+  Call .init_app() on admin
+  """
+  app.admin = Admin()
+  app.admin.init_app(app)
 
 def register_blueprints(app):
-    app.register_blueprint(views.blueprint)
-    app.register_blueprint(auth_views.blueprint)
+  """
+  Register known blueprints
+  """
+  app.register_blueprint(views.blueprint)
+  app.register_blueprint(auth_views.blueprint)
 
 def register_errorhandlers(app):
-    def render_error(error):
-        # If a HTTPException, pull the `code` attribute; default to 500
-        error_code = getattr(error, 'code', 500)
-        return render_template("{0}.html".format(error_code)), error_code
-    for errcode in [401, 404, 500]:
-        app.errorhandler(errcode)(render_error)
+  """
+  Register error handlers for common errors to show nice landing pages
+  """
+  def render_error(error):
+    """render the appropriate template if possible"""
+    # If a HTTPException, pull the `code` attribute; default to 500
+    error_code = getattr(error, 'code', 500)
+    return render_template("{0}.html".format(error_code)), error_code
+  for errcode in [403, 404, 500]:
+    app.errorhandler(errcode)(render_error)

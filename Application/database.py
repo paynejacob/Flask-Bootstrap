@@ -2,85 +2,76 @@
 """Database module, including the SQLAlchemy database object and DB-related
 utilities.
 """
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
 
-from .extensions import db
-from .compat import basestring
-
+db = SQLAlchemy()
 # Alias common SQLAlchemy names
 Column = db.Column
 relationship = relationship
-Base = declarative_base()
 
-class CRUDMixin(object):
-    """Mixin that adds convenience methods for CRUD (create, read, update, delete)
-    operations.
-    """
+class CRUDMixin():
+  """
+  Mixin that adds convenience methods for CRUD (create, read, update, delete)
+  operations.
+  """
 
-    @classmethod
-    def create(cls, **kwargs):
-        """Create a new record and save it the database."""
-        instance = cls(**kwargs)
-        return instance.save()
+  @classmethod
+  def create(cls, **kwargs):
+    """Create a new record and save it the database."""
+    instance = cls(**kwargs)
+    return instance.save()
 
-    def update(self, commit=True, **kwargs):
-        """Update specific fields of a record."""
-        for attr, value in kwargs.iteritems():
-            setattr(self, attr, value)
-        return commit and self.save() or self
+  def update(self, commit=True, **kwargs):
+    """Update specific fields of a record. Chainable"""
+    for attr, value in kwargs:
+      setattr(self, attr, value)
+    return self.save(commit=commit)
 
-    def save(self, commit=True):
-        """Save the record."""
-        db.session.add(self)
-        if commit:
-            self.commit()
-        return self
+  def save(self, commit=True):
+    """Save the record. Chainable"""
+    db.session.add(self)
+    if commit:
+      self.commit()
+    return self
 
-    def delete(self, commit=True):
-        """Remove the record from the database."""
-        db.session.delete(self)
-        return commit and self.commit()
+  def delete(self, commit=True):
+    """Remove the record from the database."""
+    db.session.delete(self)
+    if commit:
+      self.commit()
 
-    def commit(self):
-        try:
-            db.session.commit()
-        except:
-            db.session.rollback()
-            db.session.flush()
-            raise
+  def commit(self):
+    """Do a commit. May be unnecessary"""
+    try:
+      db.session.commit()
+    except:
+      db.session.rollback()
+      db.session.flush()
+      raise
 
-class Model(CRUDMixin, db.Model, Base):
-    """Base model class that includes CRUD convenience methods."""
-    __abstract__ = True
+class Model(CRUDMixin, db.Model):
+  """Base model class that includes CRUD convenience methods."""
+  __abstract__ = True
 
 # From Mike Bayer's "Building the app" talk
 # https://speakerdeck.com/zzzeek/building-the-app
-class SurrogatePK(object):
-    """A mixin that adds a surrogate integer 'primary key' column named
-    ``id`` to any declarative-mapped class.
-    """
-    __table_args__ = {'extend_existing': True}
+class SurrogatePK():
+  """A mixin that adds a surrogate integer 'primary key' column named
+  ``id`` to any declarative-mapped class.
+  """
+  __table_args__ = {'extend_existing': True}
 
-    id = db.Column(db.Integer, primary_key=True)
-
-    @classmethod
-    def get_by_id(cls, id):
-        if any(
-            (isinstance(id, basestring) and id.isdigit(),
-             isinstance(id, (int, float))),
-        ):
-            return cls.query.get(int(id))
-        return None
+  id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
 def ReferenceCol(tablename, nullable=False, pk_name='id', **kwargs):
-    """Column that adds primary key foreign key reference.
+  """Column that adds primary key foreign key reference.
 
-    Usage: ::
+  Usage: ::
 
-        category_id = ReferenceCol('category')
-        category = relationship('Category', backref='categories')
-    """
-    return db.Column(
-        db.ForeignKey("{0}.{1}".format(tablename, pk_name)),
-        nullable=nullable, **kwargs)
+    category_id = ReferenceCol('category')
+    category = relationship('Category', backref='categories')
+  """
+  return db.Column(
+    db.ForeignKey("{0}.{1}".format(tablename, pk_name)),
+    nullable=nullable, **kwargs)

@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 """Main UI section."""
-from flask import Blueprint, Response, render_template, flash, url_for, redirect, request, current_app
-from flask.ext.login import login_required, current_user
+from flask import Blueprint, render_template
+from flask_login import login_required
 
-from . import utils
 
-from Application.auth import role_required
 
 blueprint = Blueprint('main', __name__, static_folder="../static")
 
@@ -17,5 +15,6 @@ blueprint = Blueprint('main', __name__, static_folder="../static")
 @blueprint.route("/", methods=["GET"])
 @login_required
 def dashboard():
-    context = {}
-    return render_template("dashboard.html", **context)
+  """renders app dashboard"""
+  context = {}
+  return render_template("dashboard.html", **context)

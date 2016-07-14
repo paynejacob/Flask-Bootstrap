@@ -1,3 +1,4 @@
-from .database import Model, SurrogatePK
-
-# models go here
+"""
+models.py
+Models for the application
+"""
