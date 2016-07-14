@@ -3,14 +3,15 @@
 views.py
 Manages login views
 """
+from functools import wraps
 from flask import (Blueprint, request, render_template, flash, url_for,
-                   redirect)
+                   redirect, abort)
 from flask_login import (login_user, login_required, logout_user,
                          current_user)
 
 from ..utils import flash_errors
 
-from . import role_required, login_manager
+from .login_manager import login_manager
 from .forms import LoginForm, CreateUserForm, EditUserForm, ChangePasswordForm
 from .models import User
 
@@ -31,6 +32,20 @@ def unauthorized():
 def load_user(uid):
   """Load users given string uid"""
   return User.query.get(int(uid))
+
+def role_required(role):
+  """ Fails requests if the user does not have the specified role """
+  def wrapper(wrapped):
+    """enforces role_required"""
+    @wraps(wrapped)
+    def f(*args, **kwargs):
+      """dummy wrapped function"""
+      if current_user.has_role(role):
+        return wrapped(*args, **kwargs)
+      else:
+        abort(403)
+    return f
+  return wrapper
 
 @blueprint.route("/login/", methods=["GET", "POST"])
 def login():
