@@ -1,7 +1,8 @@
-{% extends 'layout.html' %}
+{% extends 'admin/master.html' %}
 
 {% block body %}
+  {{ super() }}
   <h1>Flask Bootstrap</h1>
-  <h4 style="margin: 20px 0 40px 0">Please select a category on the left to manage the application data.</h4>
+  <h4 style="margin: 20px 0 40px 0">Please select a category to manage the application data.</h4>
   <p><a href="/"><strong>Return to the application</strong></a></p>
 {% endblock %}
