@@ -45,6 +45,8 @@ Thumbs.db
 # Other
 .venv
 Application/my_apps_db
+Application/static/libs/*
 Application/static/.webassets-cache
 Application/static/js/app.min.*
 *.sublime-*
+node_modules/*
