@@ -19,6 +19,11 @@ $scroll-scope-height: calc(95vh - 100px);
     transform: translateY(-50%);
 }
 
+//From https://github.com/nickjj/flask-webpack
+@function asset-url($path){
+    @return url('~!file!' + $path);
+}
+
 /* universal */
 
 html {

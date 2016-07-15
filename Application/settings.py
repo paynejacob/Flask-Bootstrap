@@ -48,6 +48,8 @@ class Config():
   ASSETS_DEBUG = False
   ADMIN_ENABLED = True
 
+  WEBPACK_MANIFEST_PATH = os.path.join(APP_DIR, "app_src/manifest.json")
+
 
 class ProdConfig(Config):
   """Production configuration."""

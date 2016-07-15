@@ -3,7 +3,6 @@
 
 import random
 from flask import flash
-from .angular_filter import AngularTemplateCacheFilter
 
 def flash_errors(form, category="warning"):
   """ Flash all errors for a form. """
@@ -17,4 +16,4 @@ def generate_token(length=8, alphabet="abcdefghijklmnopqrstuvwxyz0123456789"):
   """
   return ''.join(random.choice(alphabet) for _ in range(length))
 
-__all__ = ["flash_errors", "generate_token", "AngularTemplateCacheFilter"]
+__all__ = ["flash_errors", "generate_token"]
