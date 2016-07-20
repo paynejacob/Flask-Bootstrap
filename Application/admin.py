@@ -1,35 +1,42 @@
 # -*- coding: utf-8 -*-
-"""Admin module. Tees up the Flask-SuperAdmin blueprint.
 """
-from flask import render_template
-from flask.ext.login import current_user
-from flask.ext.superadmin import AdminIndexView, Admin as SuperAdmin
-from flask.ext.superadmin.model import ModelAdmin
+Admin module. Tees up the Flask-Admin blueprint.
+"""
+from flask_admin import AdminIndexView, Admin as WrappedAdmin
+from flask_admin.contrib.sqla import ModelView
 
-from Application.auth import role_required
-from Application.extensions import db
+from .auth import current_user, AdminModels
+from .database import db
 
-
-
-class ProtectedModelView(ModelAdmin):
-
-    session = db.session
-
-    def is_accessible(self):
-        return role_required('admin').has_role()
+class ProtectedModelView(ModelView):
+  """
+  Requires admin access to see model
+  """
+  def is_accessible(self):
+    return current_user.is_admin
 
 
 class ProtectedAdminIndexView(AdminIndexView):
+  """
+  Requires admin access to see index page
+  """
+  def is_accessible(self):
+    return current_user.is_admin
 
-    def is_accessible(self):
-        return role_required('admin').has_role()
 
+class Admin():
+  """
+  Pretends to be the flask_admin.Admin object
+  """
+  def __init__(self):
+    self.index_view = None
+    self.admin = None
 
-class Admin(object):
-
-    def init_app(self, app):
-        from Application.auth import models as auth_models
-        index_view = ProtectedAdminIndexView(name='Admin Console')
-        admin = SuperAdmin(app, 'Application', index_view=index_view)
-        admin.register(auth_models.User, ProtectedModelView)
-        admin.register(auth_models.Role, ProtectedModelView)
+  def init_app(self, app):
+    """
+    Performs setup
+    """
+    self.index_view = ProtectedAdminIndexView(name='Admin Console')
+    self.admin = WrappedAdmin(app, 'Application', index_view=self.index_view)
+    for model in AdminModels:
+      self.admin.add_view(ProtectedModelView(model, db.session))
