@@ -13,17 +13,11 @@
   <!-- Mobile viewport optimized: h5bp.com/viewport -->
   <meta name="viewport" content="width=device-width">
   <link rel="icon" type="image/gif" href="{{ url_for('static', filename='images/favicon.ico') }}">
-  <!-- <link href='//fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'> -->
-  {# Replace with webpack
-  <link rel="stylesheet" href="{{ url_for('static', filename='libs/font-awesome/css/font-awesome.min.css') }}">
-  {% assets "app_css" %}
-    <link rel="stylesheet" href="{{ ASSET_URL }}">
-  {% endassets %}
-  {% assets "vendor_css" %}
-    <link rel="stylesheet" href="{{ ASSET_URL }}">
-  {% endassets %}
-  #}
-  {% block css %}{% endblock %}
+
+  <!-- <link rel="stylesheet" href="{{ asset_url_for('styles/styles.scss') | safe}}"> -->
+  {% block css %}
+
+  {% endblock %}
 
 </head>
 <body class="{% block body_class %}{% endblock %}">
@@ -75,8 +69,8 @@
 {% endassets %} -->
 #}
 {% block app_js %}
-TEST
-    {{ javascript_tag("main") | safe }}
+    {{ javascript_tag("app_js") | safe }}
+    {{ javascript_tag("app_style") | safe }}
 {% endblock %}
 {% block js %}{% endblock %}
 <!-- end scripts -->

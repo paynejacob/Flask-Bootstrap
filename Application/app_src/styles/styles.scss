@@ -1,7 +1,11 @@
 /* =============================================================================
          App specific CSS file.
          ========================================================================== */
-
+@import "~bootstrap-sass/assets/stylesheets/bootstrap-sprockets";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+@import "~bootswatch/lumen/variables";
+@import "~bootswatch/lumen/bootswatch";
+@import "~font-awesome/scss/font-awesome";
 /* sass helpers */
 $success-color: #43ac6a;
 $success-color-hover: #5C8D60;

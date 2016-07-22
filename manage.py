@@ -21,12 +21,13 @@ migrate = Migrate(app, db)
 class Server(OldServer):
 
   def __call__(self, *args, **kwargs):
+    app.config["ASSETS_URL"] = "http://localhost:5001/static/"
     webpack_server = sp.Popen(["/usr/bin/node",
                                "node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+                               "--content-base", "Application/static",
                                "--inline",
                                "--hot",
-                               "--port",
-                               "8081"
+                               "--port", "5001",
                               ], cwd="Application/app_src")
     super().__call__(*args, **kwargs)
 

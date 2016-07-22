@@ -49,7 +49,8 @@ class Config():
   ADMIN_ENABLED = True
 
   WEBPACK_MANIFEST_PATH = os.path.join(APP_DIR, "app_src/manifest.json")
-
+  WEBPACK_ASSETS_URL = None
+  ASSETS_URL = None #Special redirect magic, see assets.py
 
 class ProdConfig(Config):
   """Production configuration."""

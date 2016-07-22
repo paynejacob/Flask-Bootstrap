@@ -1,8 +1,10 @@
+var bootstrap = require("bootstrap-sass");
+//test
 module.exports = {
   message: "hello world"
 }
 
-console.log("goooodie")
+console.log("Hello Daniel")
 // (function() {
 //   'use strict';
 
