@@ -9,7 +9,7 @@ from flask import (Blueprint, request, render_template, flash, url_for,
 from flask_login import (login_user, login_required, logout_user,
                          current_user)
 
-from ..utils import flash_form_errors
+from ..utils import flash_form_errors, make_json_response
 
 from .login_manager import login_manager
 from .forms import LoginForm, CreateUserForm, EditUserForm, ChangePasswordForm
@@ -56,7 +56,7 @@ def login():
       login_user(form.user)
       flash("You are logged in.", 'success')
       redirect_url = request.args.get("next") or url_for("main.dashboard")
-      return redirect(redirect_url)
+      return make_json_response(redirect=redirect_url)
     else:
       flash_form_errors(form)
       abort(403)
@@ -78,7 +78,7 @@ def change_password():
       form.user.set_password(form.password.data)
       form.user.save()
       flash("Password successfully changed.", 'success')
-      return redirect(url_for('auth.change_password'))
+      return make_json_response()
     else:
       flash_form_errors(form)
       abort(400)
@@ -104,7 +104,7 @@ def create_user():
                              password=form.password.data,
                              active=True)
       flash("'{username}' account created.".format(username=new_user.username), 'success')
-      return redirect(url_for('auth.user_list'))
+      return make_json_response()
     else:
       flash_form_errors(form)
       abort(400)
@@ -123,7 +123,7 @@ def edit_user(user_id):
       user.active = form.active.data == 'True'
       user.is_admin = form.is_admin.data == 'True'
       user.save()
-      return redirect(url_for('auth.user_list'))
+      return make_json_response()
     else:
       flash_form_errors(form)
       abort(400)

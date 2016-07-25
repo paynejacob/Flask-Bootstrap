@@ -20,7 +20,7 @@ module.exports = {
   resolve: {
     extensions: ["", ".js", ".css"]
   },
-  // devtool: "source-map",
+  devtool: "source-map",
   module: {
     loaders: [
       //Sass
@@ -54,7 +54,7 @@ module.exports = {
   plugins:[
     new ManifestRevisionPlugin(path.join(rootAssetPath, "manifest.json"), {
       rootAssetPath: rootAssetPath,
-      ignorePaths: ["node_modules", "webpack.config.js", "manifest.json", "package.json", ".babelrc"],
+      ignorePaths: ["node_modules", "webpack.config.js", "manifest.json", "package.json", ".babelrc", "styles"],
       // extensionsRegex: /\.scss$/
     }),
     new webpack.ProvidePlugin({

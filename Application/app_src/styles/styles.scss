@@ -1,19 +1,17 @@
 /* =============================================================================
          App specific CSS file.
          ========================================================================== */
+@import "variables";
+
 @import "~bootstrap-sass/assets/stylesheets/bootstrap-sprockets";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
 @import "~bootswatch/lumen/variables";
 @import "~bootswatch/lumen/bootswatch";
 @import "~font-awesome/scss/font-awesome";
+
+@import "messages";
+
 /* sass helpers */
-$success-color: #43ac6a;
-$success-color-hover: #5C8D60;
-
-$warning-color: #e99002;
-$warning-color-hover: #CBA23A;
-
-$scroll-scope-height: calc(95vh - 100px);
 @mixin vertical-align {
     // http://zerosixthree.se/vertical-align-anything-with-just-3-lines-of-css/
     position: relative;
