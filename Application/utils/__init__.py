@@ -4,7 +4,7 @@
 import random
 from flask import flash
 
-def flash_errors(form, category="warning"):
+def flash_form_errors(form, category="warning"):
   """ Flash all errors for a form. """
   for field, errors in form.errors.items():
     for error in errors:

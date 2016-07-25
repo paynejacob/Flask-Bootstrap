@@ -25,6 +25,7 @@ class Server(OldServer):
     webpack_server = sp.Popen(["/usr/bin/node",
                                "node_modules/webpack-dev-server/bin/webpack-dev-server.js",
                                "--content-base", "Application/static",
+                               "--output-public-path", "http://localhost:5000/static/",
                                "--inline",
                                "--hot",
                                "--port", "5001",
