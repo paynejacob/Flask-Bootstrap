@@ -16,7 +16,7 @@
 
   <!-- <link rel="stylesheet" href="{{ asset_url_for('styles/styles.scss') | safe}}"> -->
   {% block css %}
-
+    {{ stylesheet_tag("styles/styles") | safe}}
   {% endblock %}
 
 </head>
@@ -33,19 +33,6 @@
 {% endblock %}
 
   <div role="main">
-    {#
-    <!-- <toaster-container toaster-options="{'time-out': 3000, 'close-button':true}"></toaster-container>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <div ng-controller="FlaskToasterCtrl as ctrl" >
-          {% for category, message in messages %}
-            <div style="display:none;" class="flask-message flask-message-{{loop.index0}}">{{message}}</div>
-            <div style="display:none;" class="flask-category">{{category}}</div>
-          {% endfor %}
-        </div>
-      {% endif %}
-    {% endwith %} -->
-    #}
     {% block content %}{% endblock %}
 </div>
 
@@ -54,20 +41,6 @@
 {% endblock %}
 
 <!-- JavaScript at the bottom for fast page loading -->
-{#
-<!-- {% assets "vendor_js" %}
-    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-{% endassets %}
-{% assets "angular_templates_js" %}
-  {% if config['ASSETS_DEBUG'] %}
-  <script type="text/javascript">
-    angular.module('flask-assets-templates', []);
-  </script>
-  {% else %}
-  <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-  {% endif %}
-{% endassets %} -->
-#}
 {% block app_js %}
     {{ javascript_tag("app_js") | safe }}
     {{ javascript_tag("app_style") | safe }}
@@ -76,4 +49,16 @@
 <!-- end scripts -->
 {% endblock %}
 </body>
+<messages style="display:none;">
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+      {% for category, message in messages %}
+        <div id="flask-message-{{loop.index}}">
+          <div class="flask-message" >{{message}}</div>
+          <div class="flask-category">{{category}}</div>
+        </div>
+      {% endfor %}
+  {% endif %}
+{% endwith %}
+</messages>
 </html>
