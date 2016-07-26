@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "description": "A basic flask app template",
-  "main": "app_src/app.js",
+  "main": "lib/app.js",
   "scripts": {
     "postinstall": "pip install -r requirements.txt",
     "start": "python manage.py runserver"
@@ -33,19 +33,11 @@
     "file-loader": "^0.9.0",
     "font-awesome": "^4.6.3",
     "jquery": "~2.2.4",
-    "lodash": "~4.13.1",
     "manifest-revision-webpack-plugin": "~0.3.0",
-    "multi-loader": "^0.1.0",
     "node-sass": "^3.8.0",
     "resolve-url-loader": "^1.6.0",
     "sass-loader": "^4.0.0",
     "style-loader": "^0.13.1",
-    "vue": "~1.0.0",
-    "vue-hot-reload-api": "^2.0.5",
-    "vue-html-loader": "^1.2.3",
-    "vue-loader": "~8.5.3",
-    "vue-router": "0.7.13",
-    "vue-style-loader": "^1.0.0",
     "webpack": "~1.13.1",
     "webpack-dev-server": "^1.14.1"
   }

@@ -33,11 +33,6 @@ module.exports = {
         //               )
         loaders: ["style", "css?sourceMap", "resolve-url", "sass?sourceMap"]
       },
-      //Vue
-      {
-        test: /\.vue$/,
-        loaders: ["vue"]
-      },
       //JS (ES6)
       {
         test: /\.js$/,
@@ -55,7 +50,6 @@ module.exports = {
     new ManifestRevisionPlugin(path.join(rootAssetPath, "manifest.json"), {
       rootAssetPath: rootAssetPath,
       ignorePaths: ["node_modules", "webpack.config.js", "manifest.json", "package.json", ".babelrc", "styles"],
-      // extensionsRegex: /\.scss$/
     }),
     new webpack.ProvidePlugin({
       $: "jquery",
