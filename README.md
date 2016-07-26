@@ -16,12 +16,12 @@ pip install -r requirements.txt
 ```
 
 #Starting the development Server
-### Set the environmental variables
+## Set the environmental variables
 
 ```
 export APP_ENV="dev"
 ```
-### Start the server
+## Start the server
 ```
 ./manage.py runserver
 ```
