@@ -11,27 +11,13 @@ from flask_login import (login_user, login_required, logout_user,
 
 from ..utils import flash_form_errors, make_json_response
 
-from .login_manager import login_manager
 from .forms import LoginForm, CreateUserForm, EditUserForm, ChangePasswordForm
 from .models import User
 
 blueprint = Blueprint("auth", __name__, url_prefix='/auth',
                       static_folder="../static")
 
-login_manager.login_view = 'users.login'
-
-@login_manager.unauthorized_handler
-def unauthorized():
-  """Try to make the user login"""
-  if current_user and current_user.is_authenticated:
-    return render_template('403.html')
-  else:
-    return redirect(url_for('auth.login'))
-
-@login_manager.user_loader
-def load_user(uid):
-  """Load users given string uid"""
-  return User.query.get(int(uid))
+user_view = User.register_rest_view(blueprint)
 
 def role_required(role):
   """ Fails requests if the user does not have the specified role """
@@ -43,6 +29,7 @@ def role_required(role):
       if current_user.has_role(role):
         return wrapped(*args, **kwargs)
       else:
+        flash("You do not have the {role} role".format(role="role"), "warning")
         abort(403)
     return f
   return wrapper

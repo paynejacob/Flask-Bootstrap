@@ -10,8 +10,5 @@ from .models import AdminModels
 from .views import role_required
 from .login_manager import login_manager
 
-
-
-
 __all__ = ["role_required", "AdminModels", "current_user",
            "login_manager", "crypto", "forms", "models", "views"]
