@@ -42,13 +42,9 @@ class CRUDMixin():
       self.commit()
 
   def commit(self):
-    """Do a commit. May be unnecessary"""
-    try:
-      db.session.commit()
-    except:
-      db.session.rollback()
-      db.session.flush()
-      raise
+    """Do a commit."""
+    db.session.commit()
+
 
 class Model(CRUDMixin, db.Model):
   """Base model class that includes CRUD convenience methods."""
