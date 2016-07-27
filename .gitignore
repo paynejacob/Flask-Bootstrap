@@ -42,9 +42,13 @@ install_manifest.txt
 thumbs.db
 Icon?
 Thumbs.db
+
 # Other
 .venv
+
+# Flask-Bootstrap specific
+
 Application/my_apps_db
-Application/static/.webassets-cache
-Application/static/js/app.min.*
+Application/static/*
 *.sublime-*
+Application/app_src/node_modules/*

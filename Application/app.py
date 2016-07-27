@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 """The app module, containing the app factory function."""
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
-from .assets import assets
+from .assets import webpack
 from .admin import Admin
 from .database import db
 from .auth import login_manager
 from . import views
 from .auth import views as auth_views
+from .utils import make_json_response
 
 from .settings import ProdConfig
 
@@ -32,7 +33,7 @@ def register_extensions(app):
   """
   Call .init_app() on known extensions
   """
-  assets.init_app(app)
+  webpack.init_app(app)
   db.init_app(app)
   login_manager.init_app(app)
 
@@ -58,6 +59,9 @@ def register_errorhandlers(app):
     """render the appropriate template if possible"""
     # If a HTTPException, pull the `code` attribute; default to 500
     error_code = getattr(error, 'code', 500)
-    return render_template("{0}.html".format(error_code)), error_code
-  for errcode in [403, 404, 500]:
+    if request.is_xhr or request.method == "POST":
+      return make_json_response(code=error_code)
+    else:
+      return render_template("{0}.html".format(error_code)), error_code
+  for errcode in [400, 403, 404, 500]:
     app.errorhandler(errcode)(render_error)

@@ -9,7 +9,7 @@ from flask import (Blueprint, request, render_template, flash, url_for,
 from flask_login import (login_user, login_required, logout_user,
                          current_user)
 
-from ..utils import flash_errors
+from ..utils import flash_form_errors, make_json_response
 
 from .login_manager import login_manager
 from .forms import LoginForm, CreateUserForm, EditUserForm, ChangePasswordForm
@@ -56,9 +56,10 @@ def login():
       login_user(form.user)
       flash("You are logged in.", 'success')
       redirect_url = request.args.get("next") or url_for("main.dashboard")
-      return redirect(redirect_url)
+      return make_json_response(redirect=redirect_url)
     else:
-      flash_errors(form)
+      flash_form_errors(form)
+      abort(403)
   return render_template("auth/login.html", form=form)
 
 @blueprint.route('/logout/')
@@ -72,14 +73,15 @@ def logout():
 @login_required
 def change_password():
   form = ChangePasswordForm(request.form)
-  if request.method == 'POST':
-    if form.validate_on_submit():
+  if form.is_submitted():
+    if form.validate():
       form.user.set_password(form.password.data)
       form.user.save()
       flash("Password successfully changed.", 'success')
-      return redirect(url_for('auth.change_password'))
+      return make_json_response()
     else:
-      flash_errors(form)
+      flash_form_errors(form)
+      abort(400)
   return render_template("auth/change-password.html", form=form)
 
 @blueprint.route('/users/')
@@ -95,15 +97,17 @@ def user_list():
 @role_required('orgadmin')
 def create_user():
   form = CreateUserForm(request.form)
-  if form.validate_on_submit():
-    new_user = User.create(username=form.username.data,
-                           full_name=form.full_name.data,
-                           password=form.password.data,
-                           active=True)
-    flash("'{username}' account created.".format(username=new_user.username), 'success')
-    return redirect(url_for('auth.user_list'))
-  else:
-    flash_errors(form)
+  if form.is_submitted():
+    if form.validate():
+      new_user = User.create(username=form.username.data,
+                             full_name=form.full_name.data,
+                             password=form.password.data,
+                             active=True)
+      flash("'{username}' account created.".format(username=new_user.username), 'success')
+      return make_json_response()
+    else:
+      flash_form_errors(form)
+      abort(400)
   return render_template('auth/user-add.html', form=form)
 
 @blueprint.route("/users/<int:user_id>", methods=['GET', 'POST'])
@@ -111,14 +115,16 @@ def create_user():
 def edit_user(user_id):
   user = User.query.filter_by(id=user_id).one()
   form = EditUserForm(request.form, user)
-  if form.validate_on_submit():
-    user.full_name = form.full_name.data
-    if form.password.data:
-      user.set_password(form.password.data)
-    user.active = form.active.data == 'True'
-    user.is_admin = form.is_admin.data == 'True'
-    user.save()
-    return redirect(url_for('auth.user_list'))
-  else:
-    flash_errors(form)
+  if form.is_submitted():
+    if form.validate():
+      user.full_name = form.full_name.data
+      if form.password.data:
+        user.set_password(form.password.data)
+      user.active = form.active.data == 'True'
+      user.is_admin = form.is_admin.data == 'True'
+      user.save()
+      return make_json_response()
+    else:
+      flash_form_errors(form)
+      abort(400)
   return render_template('auth/user-edit.html', form=form, user=user)

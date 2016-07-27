@@ -37,6 +37,8 @@ class Admin():
     Performs setup
     """
     self.index_view = ProtectedAdminIndexView(name='Admin Console')
-    self.admin = WrappedAdmin(app, 'Application', index_view=self.index_view)
+    self.admin = WrappedAdmin(app, 'Application',
+                              index_view=self.index_view,
+                              template_mode='bootstrap3')
     for model in AdminModels:
       self.admin.add_view(ProtectedModelView(model, db.session))

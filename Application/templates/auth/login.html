@@ -3,7 +3,7 @@
 {% block body_class %}login-page{% endblock %}
 
 {% block container_start %}
-<div class="container">
+{{ super() }}
   <div class="row">
     <div class="col-md-6 col-md-offset-3 well col-xs-12 auth_box">
 {% endblock %}
@@ -32,5 +32,5 @@
 {% block container_end %}
     </div>
   </div>
-</div>
+{{ super() }}
 {% endblock %}

@@ -1,0 +1,56 @@
+// messages.scss
+
+messages {
+  position: absolute;
+  top: 60px;
+  right: 0px;
+  max-width: 300px;
+  z-index: 2000;
+}
+
+messages > .message-wrapper {
+  display: block;
+  clear: both;
+  float: right;
+  min-height: 50px;
+  min-width: 100px;
+  border-radius: 3px;
+  padding: 10px;
+  margin: 0px 10px 10px 0px;
+  box-shadow: 0px 0px 5px #aaa;
+  position:relative;
+}
+
+messages > .message-wrapper:hover {
+  box-shadow: 0px 0px 7px #444;
+}
+
+.message-wrapper > .message-category {
+  text-transform: capitalize;
+  display: block;
+  border-bottom: 1px solid;
+  font-weight: bold;
+}
+
+.message-wrapper > .close {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  margin: 3px;
+}
+
+messages > .message-success {
+  background: $success-color;
+}
+
+messages > .message-success:hover {
+  background: $success-color-hover;
+}
+
+messages > .message-warning {
+  background: $warning-color;
+}
+
+messages > .message-warning:hover{
+  background: $warning-color-hover;
+}

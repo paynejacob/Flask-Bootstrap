@@ -6,13 +6,11 @@ An simple Flask app Template with:
 * Asset Management
 * Style framework
 
-# Dev Environment Dependencies
-* bower-cli
-* postgres
-
+# Lots of things  in this readme are out of date, CBA to fix rn
 # First Time Setup
 
 pip install -r requirements.txt
+pyton
 
 ```
 npm install
