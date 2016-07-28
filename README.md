@@ -8,8 +8,7 @@ An simple Flask app Template with:
 
 # First Time Setup
 
-```
-pip install -r requirements.txt
+
 ./manage.py npm_update
 ./manage.py db upgrade
 ./manage.py create_user

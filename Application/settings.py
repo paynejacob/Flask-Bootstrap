@@ -63,6 +63,8 @@ class DevConfig(Config):
   ENV = 'dev'
   DEBUG = True
 
+  # EXPLAIN_TEMPLATE_LOADING = True
+
   # Uncomment this line to debug javascript/css assets
   # ASSETS_DEBUG = True
   SECRET_KEY = "dontprodme".encode("utf-8")
