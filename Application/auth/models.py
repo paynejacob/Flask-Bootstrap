@@ -4,33 +4,39 @@ models.py
 """
 import datetime as dt
 
-from flask_login import UserMixin
+from flask_login import UserMixin, make_secure_token
 from . import crypto
-from ..database import (Model, SurrogatePK, Column, db, ReferenceCol,
+from ..database import (Model, Column, db, ReferenceCol,
                         relationship)
 
 
-class Role(SurrogatePK, Model):
+class Role(Model):
   """
   A user's Role, allows them to perform certain actions
   """
   __tablename__ = 'roles'
 
-  name = Column(db.String(80), unique=True, nullable=False)
-  user_id = ReferenceCol('users', nullable=True)
+  name = Column(db.String(80), primary_key=True)
+  user_id = ReferenceCol('users', pk_name='username', primary_key=True)
   user = relationship('User', backref='roles')
 
-  def __repr__(self):
-    return '{name}'.format(name=self.name)
+  def __str__(self):
+    return 'Role({name}, {user})'.format(name=self.name, user=self.user)
+
+  def __cols__(self):
+    return ("name", "user_id", "user")
+
+  def __pkey__(self):
+    return ("name", "user_id")
 
 
-class User(UserMixin, SurrogatePK, Model):
+class User(UserMixin, Model):
   """
   A user, capable of logging in and performing actions
   """
   __tablename__ = 'users'
 
-  username = Column(db.String(80), unique=True, nullable=False)
+  username = Column(db.String(80), primary_key=True)
   password = Column(db.String(128), nullable=True)
   salt = Column(db.String(128), nullable=True)
   full_name = Column(db.String(80), nullable=True)
@@ -66,14 +72,25 @@ class User(UserMixin, SurrogatePK, Model):
       return self.is_admin
     return any(str(role) == str(r) for r in self.roles)
 
-  def to_json(self):
+  def get_id(self):
+    return self.username
+
+  def get_auth_token(self):
+    return make_secure_token(self.username, self.salt, self.password)
+
+  def __serialize__(self):
     """
     represents user as json object, omitting sensitive columns
     """
     return {
       'username': self.username,
-      'fullName': self.full_name,
+      'full_name': self.full_name,
       'active': self.active
+    }
+
+  def __serialize_pkey__(self):
+    return {
+      "username": self.username
     }
 
   def __repr__(self):

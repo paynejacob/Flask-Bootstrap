@@ -19,10 +19,12 @@ messages > .message-wrapper {
   margin: 0px 10px 10px 0px;
   box-shadow: 0px 0px 5px #aaa;
   position:relative;
+  background: $message-color;
 }
 
 messages > .message-wrapper:hover {
   box-shadow: 0px 0px 7px #444;
+  background: $message-color-hover;
 }
 
 .message-wrapper > .message-category {
